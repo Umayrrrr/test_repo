@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabase-client";
 import { Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router";
+import LoaderComp from "../components/Loader";
 
 export default function Users() {
   const navigate = useNavigate();
@@ -51,12 +52,14 @@ export default function Users() {
           setUsers(allUsers || []);
         }
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     };
     checkRoleAndFetch();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoaderComp />;
   if (!isAdmin)
     return (
       <p className="text-red-500 font-bold p-10">Access Denied: Admins Only</p>
@@ -64,7 +67,15 @@ export default function Users() {
 
   return (
     <div className="p-6">
-      <h2 className="font-bold text-2xl mb-4">Users</h2>
+      <div className="flex justify-between ">
+        <h2 className="font-bold text-2xl mb-4">Users</h2>
+        <button
+          onClick={() => navigate("/add-user")}
+          className="mb-3 px-4 py-2  bg-green-600 text-white rounded-md hover:bg-green-700"
+        >
+          Add User
+        </button>
+      </div>
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">

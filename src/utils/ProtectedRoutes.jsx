@@ -3,20 +3,18 @@ import { Outlet, Navigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 
 const ProtectedRoutes = () => {
-  const [session, setSession] = useState();
+  const [session, setSession] = useState(undefined);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-    });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      if (!session) {
+        supabase.auth.signOut().then(() => {
+          setSession(null);
+        });
+      }
     });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   if (session === undefined) return null;

@@ -9,6 +9,7 @@ export default function About() {
     useEffect(() => {
       fetchTodos();
     }, []);
+
     const { data, error } = await supabase.from("TodoList").select("*");
     if (error) {
       console.error("Error fetching todos: ", error.message);

@@ -19,6 +19,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
+    "react-loader-spinner": "^8.0.2",
     "react-router-dom": "^7.13.0",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",

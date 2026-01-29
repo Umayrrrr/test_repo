@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase-client";
+import LoaderComp from "../components/Loader";
 
 export default function Home() {
   const [firstName, setFirstName] = useState(null);
@@ -24,14 +25,16 @@ export default function Home() {
             setFirstName(data.first_name);
           }
         }
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       } catch (error) {
         console.error(error.message);
       }
     };
     fetchUserName();
   }, []);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoaderComp />;
 
   return (
     <div className="h-full w-full z-50 absolute top-0 left-0">

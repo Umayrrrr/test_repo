@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 import { toast, ToastContainer } from "react-toastify";
+import LoaderComp from "../components/Loader";
 
 export default function EditUser() {
   const { id } = useParams();
@@ -44,7 +45,7 @@ export default function EditUser() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoaderComp />;
 
   return (
     <div className="p-10 max-w-lg mx-auto">
