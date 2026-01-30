@@ -1,8 +1,8 @@
+
 export default function Home() {
+    
     return (
-        <div className="flex h-full justify-center items-center">
-            
-            <h1 className="font-bold font-serif shadow-xl">Pakhair raghle</h1>
-        </div>
+        <h1 className="px-150 py-50 font-bold
+        ">Pakhair Raghle!</h1>
     );
 }
