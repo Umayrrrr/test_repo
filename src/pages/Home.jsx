@@ -1,8 +1,8 @@
 export default function Home() {
     return (
-        <div>
-            <h2>Welcome to the Home Page</h2>
+        <div className="flex h-full justify-center items-center">
             
+            <h1 className="font-bold font-serif shadow-xl">Pakhair raghle</h1>
         </div>
     );
 }
