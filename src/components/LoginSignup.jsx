@@ -64,7 +64,7 @@ export default function LoginSignup() {
                 <input
                   id="email"
                   type="text"
-                  {...register("email",{
+                  {...register("email",{required:"Email is required",
                     pattern:{
                         value: /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/ ,
                         message: 'Invalid email format',
@@ -86,12 +86,21 @@ export default function LoginSignup() {
 
               <div className="mt-2">
                 <input
-                {...register("password",{required:"This is required"})}
+                  {...register("password",{required:"Password is required",
+                    minLength:{
+                      value:8,
+                      message:"Minimum 8 characters"
+                    },
+                    pattern:{
+                      value:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                      message:"One capital one small letter , one number special character",
+                    }
+                  })}
                   id="password"
-                  type="Password"
+                  type="text"
                   className="block w-full rounded-md bg-white  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/ "
                 />
-                <p className="text-red-500">{errors.email?.message}</p>
+                <p className="text-red-500">{errors.password?.message}</p>
               </div>
             </div>
 
