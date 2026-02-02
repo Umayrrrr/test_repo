@@ -41,8 +41,13 @@ export default function Contacts() {
             <label className="font-bold">Email:</label>
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-              type="email"
-              {...register("email", { required: "Email is required" })}
+              type="text"
+              {...register("email", { required: "Email is required" ,
+                pattern:{
+                  value:/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/ ,
+                  message:"Invalid email format",
+                }
+              })}
               placeholder="Email"
             />
             <p className="text-red-500">{errors.email?.message}</p>
