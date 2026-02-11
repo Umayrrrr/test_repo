@@ -1,15 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
-export default function LoginSignup() {
+
+export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
+
   const [isLogIn, setIsLogIn] = useState(true);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit=(data)=>console.log(data);
 
+  
+    const onSubmit = (data) => {
+      if(isLogIn){
+      axios
+        .post("http://localhost:5001/login", data)
+        .then((res) => {
+          sessionStorage.setItem('User',res.data.data.firstname)
+          sessionStorage.setItem('Email',res.data.data.email)
+          sessionStorage.setItem('LoggedIn' , true)
+          onLoginSuccess(); 
+        })
+        
+        .catch((error) => {
+          console.log(error);
+          toast.error('Invalid Credentials',{
+            theme: "colored"
+          })
+      });
+    }
+    else{
+      axios
+        .post("http://localhost:5001/signup",data)
+        .then((res)=>{
+          setIsLogIn(!isLogIn)
+          toast.success('Signup Successful!.', {
+          theme: "colored",
+    });
+          console.log(res.data);
+      })
+      .catch((error)=> {
+        toast.error('Error creating account. Please try again',{
+          theme: "colored"
+        })
+        console.error(error);
+        
+      })
+
+      
+  }
+}
+  
   return (
     <div className="bg-gray-900 flex flex-col h-screen justify-center px-6 py-12 border-2 lg:px-8 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm  ">
@@ -19,37 +64,63 @@ export default function LoginSignup() {
       </div>
       <div>
         <div className="mt-10 ">
-          <form onSubmit={handleSubmit(onSubmit)}
-          className="space-y-5 p-5 px-100">
+        
+          <form
+            name="signupform"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-5 p-5 px-100"
+          >
             {!isLogIn ? (
               <div>
                 <label
-                  htmlFor="username"
+                  htmlFor="firstname"
                   className="font-medium text-white block "
                 >
-                  Username:
+                  First Name:
                 </label>
 
                 <div className="mt-2">
                   <input
-                    id="username"
+                    id="firstname"
+                    name="firstname"
                     type="text"
-                    {...register("username",{required:{
-                        value: true,
-                        message:"Username is required.",
-                    }
-                },
-                   { minLength:
-                    {
-                        value:3,
-                        message:"Minimun 3 characters",
-                    }}
-                )}
+                    {...register(
+                      "firstname",
+                      {
+                        required: {
+                          value: true,
+                          message: "First Name is required.",
+                        },
+                      },
+                      {
+                        minLength: {
+                          value: 3,
+                          message: "Minimum 3 characters",
+                        },
+                      },
+                    )}
                     className="block w-full rounded-md bg-white  px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/ "
                   />
-                  <p className="text-red-500">{errors.username?.message}</p>
+                  <p className="text-red-500">{errors.firstname?.message}</p>
                 </div>
-                
+                <div className="mt-2">
+                  <label
+                    htmlFor="lastname"
+                    className="font-medium text-white block "
+                  >
+                    Last Name:
+                  </label>
+
+                  <div className="mt-2">
+                    <input
+                      id="lastname"
+                      type="text"
+                      {...register("lastname")}
+                      className="block w-full rounded-md bg-white  px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/ "
+                    />
+                    <p className="text-red-500">{errors.lastname?.message}</p>
+                  </div>
+                </div>
               </div>
             ) : (
               <div> </div>
@@ -64,17 +135,19 @@ export default function LoginSignup() {
                 <input
                   id="email"
                   type="text"
-                  {...register("email",{required:"Email is required",
-                    pattern:{
-                        value: /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/ ,
-                        message: 'Invalid email format',
-                    }})}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value:
+                        /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/,
+                      message: "Invalid email format",
+                    },
+                  })}
                   className="block w-full rounded-md bg-white  px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/ "
                 />
                 <p className="text-red-500">{errors.email?.message}</p>
               </div>
-             
-            </div>
+</div>
 
             <div>
               <label
@@ -86,15 +159,18 @@ export default function LoginSignup() {
 
               <div className="mt-2">
                 <input
-                  {...register("password",{required:"Password is required",
-                    minLength:{
-                      value:8,
-                      message:"Minimum 8 characters"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Minimum 8 characters",
                     },
-                    pattern:{
-                      value:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-                      message:"One capital one small letter , one number special character",
-                    }
+                    pattern: {
+                      value:
+                        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                      message:
+                        "One capital one small letter , one number special character",
+                    },
                   })}
                   id="password"
                   type="text"
@@ -126,6 +202,9 @@ export default function LoginSignup() {
           </div>
         </div>
       </div>
+      
+      <ToastContainer/>           
     </div>
   );
-}
+    }
+
