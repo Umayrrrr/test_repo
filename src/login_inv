@@ -2,59 +2,90 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Layout from "../Layout";
+import { useNavigate } from "react-router";
+import { supabase } from "../supabase-client";
 
-
-export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
-
+export default function LoginSignup({ onLoginSuccess, onSignupSuccess }) {
+  const navigate = useNavigate();
   const [isLogIn, setIsLogIn] = useState(true);
+  const [admin, setAdmin] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm();
 
-  
-    const onSubmit = (data) => {
-      if(isLogIn){
-      axios
-        .post("http://localhost:5001/login", data)
-        .then((res) => {
-          sessionStorage.setItem('User',res.data.data.firstname)
-          sessionStorage.setItem('Email',res.data.data.email)
-          sessionStorage.setItem('LoggedIn' , true)
-          onLoginSuccess(); 
-        })
-        
-        .catch((error) => {
-          console.log(error);
-          toast.error('Invalid Credentials',{
-            theme: "colored"
-          })
-      });
-    }
-    else{
-      axios
-        .post("http://localhost:5001/signup",data)
-        .then((res)=>{
-          setIsLogIn(!isLogIn)
-          toast.success('Signup Successful!.', {
-          theme: "colored",
-    });
-          console.log(res.data);
-      })
-      .catch((error)=> {
-        toast.error('Error creating account. Please try again',{
-          theme: "colored"
-        })
-        console.error(error);
-        
-      })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      
-  }
-}
-  
+    if (!isLogIn) {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (signUpError) {
+        toast.error("Error creating account. Please try again", {
+          theme: "colored",
+        });
+        console.error(signUpError.error);
+        return;
+      }
+    } else {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) {
+        toast.error("Error creating account. Please try again", {
+          theme: "colored",
+        });
+        console.error(signInError.error);
+        return;
+      }
+    }
+  };
+
+  // const onSubmit = (data) => {
+  //   if (isLogIn) {
+  //     axios
+  //       .post("http://localhost:5001/login", data)
+  //       .then((res) => {
+  //         sessionStorage.setItem("User", res.data.data.firstname);
+  //         sessionStorage.setItem("Email", res.data.data.email);
+
+  //         navigate("/home");
+  //       })
+
+  //       .catch((error) => {
+  //         console.log(error);
+  //         toast.error("Invalid Credentials", {
+  //           theme: "colored",
+  //         });
+  //       });
+  //   } else {
+  //     axios
+  //       .post("http://localhost:5001/signup", data)
+  //       .then((res) => {
+  //         setIsLogIn(!isLogIn);
+  //         toast.success("Signup Successful!.", {
+  //           theme: "colored",
+  //         });
+  //         console.log(res.data);
+  //       })
+  //       .catch((error) => {
+  //         toast.error("Error creating account. Please try again", {
+  //           theme: "colored",
+  //         });
+  //         console.error(error);
+  //       });
+  //   }
+  // };
+
   return (
     <div className="bg-gray-900 flex flex-col h-screen justify-center px-6 py-12 border-2 lg:px-8 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm  ">
@@ -64,10 +95,10 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
       </div>
       <div>
         <div className="mt-10 ">
-        
           <form
             name="signupform"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit()}
+            // onSubmit={handleSubmit(onSubmit)}
             className="space-y-5 p-5 px-100"
           >
             {!isLogIn ? (
@@ -84,6 +115,7 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
                     id="firstname"
                     name="firstname"
                     type="text"
+                    onChange={(e) => setFirstName(e.target.value)}
                     {...register(
                       "firstname",
                       {
@@ -115,6 +147,7 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
                     <input
                       id="lastname"
                       type="text"
+                      onChange={(e) => setLastName(e.target.value)}
                       {...register("lastname")}
                       className="block w-full rounded-md bg-white  px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/ "
                     />
@@ -135,6 +168,7 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
                 <input
                   id="email"
                   type="text"
+                  onChange={(e) => setEmail(e.target.value)}
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -147,7 +181,7 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
                 />
                 <p className="text-red-500">{errors.email?.message}</p>
               </div>
-</div>
+            </div>
 
             <div>
               <label
@@ -159,6 +193,7 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
 
               <div className="mt-2">
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -202,9 +237,8 @@ export default function LoginSignup({onLoginSuccess,onSignupSuccess}) {
           </div>
         </div>
       </div>
-      
-      <ToastContainer/>           
+
+      <ToastContainer />
     </div>
   );
-    }
-
+}

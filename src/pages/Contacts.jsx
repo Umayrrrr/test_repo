@@ -9,7 +9,7 @@ export default function Contacts() {
   } = useForm();
   const [submitted, setSubmitted] = useState(null);
   return (
-    <div className="contacts">
+    <div className="py-5 contacts">
       <div className="flex flex-row justify-center h-full ">
         <form
           onSubmit={handleSubmit((data) => setSubmitted(data))}
@@ -42,11 +42,12 @@ export default function Contacts() {
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               type="text"
-              {...register("email", { required: "Email is required" ,
-                pattern:{
-                  value:/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/ ,
-                  message:"Invalid email format",
-                }
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/,
+                  message: "Invalid email format",
+                },
               })}
               placeholder="Email"
             />
@@ -73,25 +74,30 @@ export default function Contacts() {
           </div>
         </form>
       </div>
-    
-    <div id="display" className="flex flex-row justify-center h-full">
-      <div className="w-full max-w-lg border-2 p-4 bg-white rounded-md">
-        {submitted ? (
-          <div className="flex flex-col space-y-2">
-            <h3 className="font-bold">Submitted Data</h3>
-            <p><strong>First Name:</strong> {submitted.firstName}</p>
-            <p><strong>Last Name:</strong> {submitted.lastName}</p>
-            <p><strong>Email:</strong> {submitted.email}</p>
-            <p><strong>Note:</strong> {submitted.note}</p>
-          </div>
-        ) : (
-          <p className="text-gray-500">No submission yet.</p>
-        )}
+
+      <div id="display" className="flex flex-row justify-center h-full">
+        <div className="w-full max-w-lg border-2 p-4 bg-white rounded-md">
+          {submitted ? (
+            <div className="flex flex-col space-y-2">
+              <h3 className="font-bold">Submitted Data</h3>
+              <p>
+                <strong>First Name:</strong> {submitted.firstName}
+              </p>
+              <p>
+                <strong>Last Name:</strong> {submitted.lastName}
+              </p>
+              <p>
+                <strong>Email:</strong> {submitted.email}
+              </p>
+              <p>
+                <strong>Note:</strong> {submitted.note}
+              </p>
+            </div>
+          ) : (
+            <p className="text-gray-500">No submission yet.</p>
+          )}
+        </div>
       </div>
-        
     </div>
-    
-    </div>
-    
   );
 }
