@@ -9,11 +9,7 @@ export default function Contacts() {
   } = useForm();
   const [submitted, setSubmitted] = useState(null);
   return (
-<<<<<<< HEAD
     <div className="py-5 contacts">
-=======
-    <div className="contacts">
->>>>>>> f07a3d7 (adding contact form)
       <div className="flex flex-row justify-center h-full ">
         <form
           onSubmit={handleSubmit((data) => setSubmitted(data))}
@@ -45,7 +41,6 @@ export default function Contacts() {
             <label className="font-bold">Email:</label>
             <input
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-<<<<<<< HEAD
               type="text"
               {...register("email", {
                 required: "Email is required",
@@ -54,10 +49,6 @@ export default function Contacts() {
                   message: "Invalid email format",
                 },
               })}
-=======
-              type="email"
-              {...register("email", { required: "Email is required" })}
->>>>>>> f07a3d7 (adding contact form)
               placeholder="Email"
             />
             <p className="text-red-500">{errors.email?.message}</p>
@@ -83,7 +74,6 @@ export default function Contacts() {
           </div>
         </form>
       </div>
-<<<<<<< HEAD
 
       <div id="display" className="flex flex-row justify-center h-full">
         <div className="w-full max-w-lg border-2 p-4 bg-white rounded-md">
@@ -109,27 +99,5 @@ export default function Contacts() {
         </div>
       </div>
     </div>
-=======
-    
-    <div id="display" className="flex flex-row justify-center h-full">
-      <div className="w-full max-w-lg border-2 p-4 bg-white rounded-md">
-        {submitted ? (
-          <div className="flex flex-col space-y-2">
-            <h3 className="font-bold">Submitted Data</h3>
-            <p><strong>First Name:</strong> {submitted.firstName}</p>
-            <p><strong>Last Name:</strong> {submitted.lastName}</p>
-            <p><strong>Email:</strong> {submitted.email}</p>
-            <p><strong>Note:</strong> {submitted.note}</p>
-          </div>
-        ) : (
-          <p className="text-gray-500">No submission yet.</p>
-        )}
-      </div>
-        
-    </div>
-    
-    </div>
-    
->>>>>>> f07a3d7 (adding contact form)
   );
 }
