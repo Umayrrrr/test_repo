@@ -19,7 +19,10 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
+<<<<<<< HEAD
     "react-loader-spinner": "^8.0.2",
+=======
+>>>>>>> f07a3d7 (adding contact form)
     "react-router-dom": "^7.13.0",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
