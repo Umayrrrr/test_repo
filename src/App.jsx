@@ -8,6 +8,7 @@ import LoginSignup from "./pages/LoginSignup";
 import EditUser from "./pages/EditUser";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import AddUser from "./pages/NewUser";
+import FeedbackChat from "./pages/FeedbackChat";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/users" element={<Users />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="add-user" element={<AddUser />} />
+            <Route path="feedbackChat" element={<FeedbackChat />}></Route>
           </Route>
         </Route>
       </Routes>

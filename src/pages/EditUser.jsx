@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../supabase-client";
 import { toast, ToastContainer } from "react-toastify";
 import LoaderComp from "../components/Loader";
+import Switch from "@mui/material/Switch";
 
 export default function EditUser() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function EditUser() {
     first_name: "",
     email: "",
     role: "",
+    is_active: true,
   });
 
   useEffect(() => {

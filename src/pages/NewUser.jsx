@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 export default function AddUser() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   const {
     register,
@@ -30,6 +31,7 @@ export default function AddUser() {
           first_name: data.firstname,
           last_name: data.lastname,
           role: data.role,
+          is_active: isActive,
         },
         headers: {
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY}`,
