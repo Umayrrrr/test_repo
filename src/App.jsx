@@ -9,6 +9,8 @@ import EditUser from "./pages/EditUser";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import AddUser from "./pages/NewUser";
 import FeedbackChat from "./pages/FeedbackChat";
+import TicTacToe from "./pages/TicTacToe";
+import Todos from "./pages/Todos";
 
 export default function App() {
   return (
@@ -24,6 +26,8 @@ export default function App() {
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="add-user" element={<AddUser />} />
             <Route path="feedbackChat" element={<FeedbackChat />}></Route>
+            <Route path="/tictactoe" element={<TicTacToe />}></Route>
+            <Route path="/todolist" element={<Todos />}></Route>
           </Route>
         </Route>
       </Routes>

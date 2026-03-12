@@ -151,6 +151,7 @@ export default function Users() {
             <th className="border p-2 text-left">Role</th>
             <th className="border p-2">Active</th>
             <th className="border p-2">Actions</th>
+            <th className="border p-2">Wins</th>
           </tr>
         </thead>
         <tbody>
@@ -184,6 +185,10 @@ export default function Users() {
                   />
                 </div>
               </td>
+              <div className="border mt-3">
+                <td className=" p-2">X:{u.x_wins}</td>
+                <td className="  p-2">O:{u.o_wins}</td>
+              </div>
             </tr>
           ))}
         </tbody>

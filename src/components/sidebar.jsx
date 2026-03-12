@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import {
+  Gamepad,
   Home,
   Info,
+  ListTodo,
   Mail,
   MoreVertical,
   User,
@@ -45,6 +47,22 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             {isOpen && <span>Users</span>}
           </Link>
         }
+
+        <Link
+          to="/tictactoe"
+          className="flex items-center gap-2 hover:bg-gray-500 p-2 rounded"
+        >
+          <Gamepad />
+          {isOpen && <span>Tic-Tac-Toe</span>}
+        </Link>
+
+        <Link
+          to="/todolist"
+          className="flex items-center gap-2 hover:bg-gray-500 p-2 rounded"
+        >
+          <ListTodo />
+          {isOpen && <span>To-Do-List</span>}
+        </Link>
       </nav>
     </aside>
   );
